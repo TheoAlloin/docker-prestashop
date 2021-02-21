@@ -1,0 +1,10 @@
+!src
+!ci
+!local
+local/*
+!local/.gitkeep
+
+!.gitignore
+!.gitlab-ci.yml
+!readme.md
+!.gitattributes

@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  mariadb:
+    build: ./docker/mariadb
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWD}
+      - MYSQL_DATABASE=${DB_NAME}
+
+  prestashop_1.7.6:
+    build: ./docker/prestashop1.7.6
+    depends_on:
+      - mariadb
+    ports:
+      - 8084:80
+    volumes:
+      - ${LOCAL_PROJECT_DIR}modules:${DOCKER_PROJECT_DIR}modules
+      - ${LOCAL_PROJECT_DIR}themes:${DOCKER_PROJECT_DIR}themes
+      - ${LOCAL_PROJECT_DIR}override:${DOCKER_PROJECT_DIR}override
+    environment:
+      - DB_SERVER=mariadb
+      - DB_PREFIX=ps176_
+      - PS_DEV_MODE=${PS_DEV_MODE}
+      - PS_INSTALL_AUTO=1
+      - PS_LANGUAGE=fr
+      - PS_COUNTRY=FR
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - DB_NAME=${DB_NAME}
+      - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
+      - PS_DOMAIN=${PS_DOMAIN}:8084
+      - PS_LANGUAGE=${PS_LANGUAGE}
+      - PS_COUNTRY=${PS_COUNTRY}
+      - PS_FOLDER_INSTALL=installed
+      - ADMIN_MAIL=${PS_ADMIN_EMAIL}
+      - ADMIN_PASSWD=${PS_ADMIN_PASSWD}
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mariadb
+    ports:
+      - 81:80
+    environment:
+      - PMA_HOST=${PMA_HOST}
+      - PMA_USER=${PMA_USER}
+      - PMA_PASSWORD=${PMA_PASSWORD}
