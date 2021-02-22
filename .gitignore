@@ -8,3 +8,4 @@ local/*
 !.gitlab-ci.yml
 !readme.md
 !.gitattributes
+shared/www/
