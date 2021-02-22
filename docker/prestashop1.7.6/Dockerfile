@@ -18,5 +18,10 @@ RUN yes | pecl install xdebug \
 USER root
 
 RUN usermod --non-unique --uid 1000 www-data \
-  && groupmod --non-unique --gid 1000 www-data \
-  && chown -R www-data:www-data /var/www
+    && groupmod --non-unique --gid 1000 www-data \
+    && find /var/www -type d -exec chmod 755 {} ";" \
+    && find /var/www -type f -exec chmod 644 {} ";"
+
+RUN chown -Rf www-data:www-data /var/www
+
+USER www-data

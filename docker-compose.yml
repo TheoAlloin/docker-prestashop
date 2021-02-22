@@ -16,19 +16,25 @@ services:
     ports:
       - 8084:80
     volumes:
-      - ${LOCAL_PROJECT_DIR}modules:${DOCKER_PROJECT_DIR}modules
-      - ${LOCAL_PROJECT_DIR}themes:${DOCKER_PROJECT_DIR}themes
-      - ${LOCAL_PROJECT_DIR}override:${DOCKER_PROJECT_DIR}override
+    - ${LOCAL_PROJECT_DIR}/app:${DOCKER_PROJECT_DIR}/app
+    - ${LOCAL_PROJECT_DIR}/config:${DOCKER_PROJECT_DIR}/config
+    - ${LOCAL_PROJECT_DIR}/modules:${DOCKER_PROJECT_DIR}/modules
+    - ${LOCAL_PROJECT_DIR}/override:${DOCKER_PROJECT_DIR}/override
+    - ${LOCAL_PROJECT_DIR}/src:${DOCKER_PROJECT_DIR}/src
+    - ${LOCAL_PROJECT_DIR}/themes:${DOCKER_PROJECT_DIR}/themes
+    - ${LOCAL_PROJECT_DIR}/var/logs:${DOCKER_PROJECT_DIR}/var/logs:ro
+    - ${LOCAL_PROJECT_DIR}/var/cache:${DOCKER_PROJECT_DIR}/var/cache:ro
+    # user: 1000:1000
     environment:
       - DB_SERVER=mariadb
       - DB_PREFIX=ps176_
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
       - PS_DEV_MODE=${PS_DEV_MODE}
       - PS_INSTALL_AUTO=1
       - PS_LANGUAGE=fr
       - PS_COUNTRY=FR
-      - DB_USER=${DB_USER}
-      - DB_PASSWD=${DB_PASSWD}
-      - DB_NAME=${DB_NAME}
       - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
       - PS_DOMAIN=${PS_DOMAIN}:8084
       - PS_LANGUAGE=${PS_LANGUAGE}
@@ -47,3 +53,4 @@ services:
       - PMA_HOST=${PMA_HOST}
       - PMA_USER=${PMA_USER}
       - PMA_PASSWORD=${PMA_PASSWORD}
+
